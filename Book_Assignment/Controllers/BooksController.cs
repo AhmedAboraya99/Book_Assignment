@@ -29,6 +29,10 @@ namespace Book_Assignment.Controllers
         [HttpPost]
         public IActionResult AddBook([FromBody] BookDTO bookdto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var bookres = _repo.Add(bookdto);
 
             if (bookres == null)
