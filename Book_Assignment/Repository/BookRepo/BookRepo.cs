@@ -114,6 +114,9 @@ namespace Book_Assignment.Repository.BookRepo
                     .Where(g => bookDTO.GenreIds.Contains(g.Id)).ToList();
             }
 
+            _context.Update(book);
+            _context.SaveChanges();
+
             return bookDTO;
 
 

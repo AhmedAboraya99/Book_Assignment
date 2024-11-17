@@ -9,7 +9,7 @@ namespace Book_Assignment.Repository.BookRepo
         public List<BookToReturnDTO> GetAll();
         public BookDTO Add(BookDTO bookDTO);
 
-        public BookDTO Update(BookDTO bookDTO);
+        public BookDTO Update(int Id, BookDTO bookDTO);
 
         public BookDTO DeleteById(int id);
     }

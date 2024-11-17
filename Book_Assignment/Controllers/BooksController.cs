@@ -51,6 +51,18 @@ namespace Book_Assignment.Controllers
 
             return Ok(bookdto);
         }
+        [HttpPut]
+        public IActionResult UpdateBook(int Id, BookDTO bookDTO)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var bookRes = _repo.Update(Id, bookDTO);
+            if(bookRes == null)
+                return NotFound();
+
+
+            return Ok(bookRes);
+        }
     }
-}
 }
