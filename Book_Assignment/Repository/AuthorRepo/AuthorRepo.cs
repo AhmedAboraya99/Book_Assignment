@@ -72,7 +72,13 @@ namespace Book_Assignment.Repository.AuthorRepo
                     .Select(b => new Book
                     {
                         Title = b.Title,
-                        PublishedYear = b.PublishedYear
+                        PublishedYear = b.PublishedYear,
+                        Genres = b.Genres
+                                .Where(g => ! _context.genre.Select(mg => mg.Name).Contains(g.Name))//check existing genres before adding one
+                                .Select(g => new Genre
+                                {
+                                    Name = g.Name,
+                                }).ToList()
                     }).ToList()
             };
 
