@@ -134,6 +134,7 @@ namespace Book_Assignment.Repository.BookRepo
 
         public BookToReturnDTO AddDataToBook(BookToReturnDTO bookDTO)
         {
+            //select all author names from database
             var existingAuthorNames = _context.authors.Select(a => a.Name).ToList();
 
             var book = new Book
@@ -141,13 +142,14 @@ namespace Book_Assignment.Repository.BookRepo
                 Title = bookDTO.Title,
                 PublishedYear = bookDTO.PublishedYear,
                 //add  new authors
-                // add
-                Authors = bookDTO.Authors.Where(a => ! existingAuthorNames.Contains(a.Name)).Select(i => new Author
+                
+                Authors = bookDTO.Authors.Where(a => !existingAuthorNames.Contains(a.Name)).Select(i => new Author
                 {
 
                     Name = i.Name,
                     Email = i.Email,
                     Phone = i.Phone, 
+                    NationalityId = i.NationalityId
                 }
                 
                 ).ToList(),
