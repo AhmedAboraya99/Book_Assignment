@@ -15,5 +15,6 @@ namespace Book_Assignment
 
         public DbSet<Genre> genre { get; set; }
 
+        public DbSet<Nationality> nationality { get; set; }
     }
 }

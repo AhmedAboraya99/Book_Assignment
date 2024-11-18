@@ -12,9 +12,9 @@ namespace Book_Assignment.Models
         public DateTime PublishedYear { get; set; }
 
         
-        public required ICollection<Author> Authors { get; set; }
+        public IList<Author>? Authors { get; set; }
 
-        public ICollection<Genre>? Genres { get; set; }
+        public IList<Genre>? Genres { get; set; }
 
 
 
