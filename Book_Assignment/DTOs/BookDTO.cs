@@ -9,7 +9,7 @@ namespace Book_Assignment.DTOs
         public string Title { get; set; }
 
         public DateTime PublishedYear { get; set; }
-
+        //with add
         public List<int> AuthorIds { get; set; } = new List<int>();
 
         public List<int> GenreIds { get; set; } = new List<int>();
@@ -18,12 +18,12 @@ namespace Book_Assignment.DTOs
 
     public class BookToReturnDTO
     {
-
+    
         [Required]
         public string Title { get; set; }
 
         public DateTime PublishedYear { get; set; }
-
+        //for get
         public List<AuthorDTO> Authors { get; set; } = new List<AuthorDTO>();
 
         public List<GenreDTO> Genres { get; set; } = new List<GenreDTO>();

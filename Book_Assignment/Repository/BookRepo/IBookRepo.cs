@@ -12,5 +12,9 @@ namespace Book_Assignment.Repository.BookRepo
         public BookDTO Update(int Id, BookDTO bookDTO);
 
         public BookDTO DeleteById(int id);
+
+        public BookToReturnDTO AddDataToBook(BookToReturnDTO bookDTO);
+
+
     }
 }

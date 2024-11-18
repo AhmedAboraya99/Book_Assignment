@@ -12,7 +12,8 @@ namespace Book_Assignment.Controllers
     {
         private readonly IBookRepo _repo;
 
-        public BooksController(IBookRepo repo) {
+        public BooksController(IBookRepo repo)
+        {
             _repo = repo;
         }
         [HttpGet]
@@ -43,7 +44,8 @@ namespace Book_Assignment.Controllers
             return Created();
 
         }
-        public IActionResult GetBookById(int id) 
+        [HttpGet("{id}")]
+        public IActionResult GetBookById(int id)
         {
             var bookdto = _repo.GetById(id);
             if (bookdto == null)
@@ -54,15 +56,43 @@ namespace Book_Assignment.Controllers
         [HttpPut]
         public IActionResult UpdateBook(int Id, BookDTO bookDTO)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
-            var bookRes = _repo.Update(Id, bookDTO);
-            if(bookRes == null)
+            var booRes = _repo.Update(Id, bookDTO);
+
+
+            if (booRes == null)
                 return NotFound();
 
+            return Ok(booRes);
+        }
+        [HttpDelete]
+        public IActionResult DeleteBook(int id)
+        {
+
+            var bookRes = _repo.DeleteById(id);
+            if (bookRes == null)
+                return NotFound();
 
             return Ok(bookRes);
         }
+        [HttpPost("AddDataToBook")]
+        public IActionResult AddDataToBook(BookToReturnDTO bookDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var bookRes = _repo.AddDataToBook(bookDTO);
+            
+            if(bookRes == null)
+                return NotFound();
+
+            return Ok(bookRes);
+        }
+
+
     }
 }

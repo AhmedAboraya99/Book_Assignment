@@ -1,4 +1,6 @@
+using Author_Assignment.Repository.AuthorRepo;
 using Book_Assignment;
+using Book_Assignment.Repository.AuthorRepo;
 using Book_Assignment.Repository.BookRepo;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.
         UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IBookRepo, BookRepo>();
+builder.Services.AddScoped<IAuthorRepo, AuthorRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

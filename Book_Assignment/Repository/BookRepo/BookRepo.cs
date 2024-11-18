@@ -3,6 +3,7 @@ using Book_Assignment.Models;
 using Book_Assignment.Repository.BookRepo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Book_Assignment.Repository.BookRepo
 {
@@ -15,12 +16,12 @@ namespace Book_Assignment.Repository.BookRepo
         }
         public BookDTO Add( BookDTO bookDTO)
         {
+            //select existed authores
             var authors = _context.authors
                 .Where(a => bookDTO.AuthorIds.Contains(a.Id)).ToList();
 
             var genres = _context.genre
                 .Where(g => bookDTO.GenreIds.Contains(g.Id)).ToList();
-
 
             var book = new Book
             {
@@ -40,7 +41,19 @@ namespace Book_Assignment.Repository.BookRepo
 
         public BookDTO DeleteById(int id)
         {
-            throw new NotImplementedException();
+            var book = _context.books.Find(id);
+
+            if (book == null) return null;
+
+            var bookdto = new BookDTO
+            {
+                Title = book.Title,
+                PublishedYear = book.PublishedYear,
+            };
+            _context.books.Remove(book);
+            _context.SaveChanges();
+
+            return bookdto;
         }
 
         public List<BookToReturnDTO> GetAll()
@@ -69,7 +82,10 @@ namespace Book_Assignment.Repository.BookRepo
 
         public BookToReturnDTO GetById(int id)
         {
-            var book = _context.books.Find(id);
+            var book = _context.books
+                .Include(b => b.Authors)
+                .Include(b => b.Genres)
+                .FirstOrDefault(x => x.Id == id);
 
             var bookdto = new BookToReturnDTO
             {
@@ -94,32 +110,61 @@ namespace Book_Assignment.Repository.BookRepo
 
         public BookDTO Update(int Id, BookDTO bookDTO)
         {
+            
             var book = _context.books.Find(Id);
-
-            if (book == null)
-            {
-                return null;
-            }
+            if (book == null)   return null;
             book.Title = bookDTO.Title;
+
             book.PublishedYear = bookDTO.PublishedYear;
-
-            if (bookDTO.AuthorIds != null)
-            {
-                book.Authors = _context.authors
+                if (bookDTO.AuthorIds.Count() > 0)
+                {
+                    book.Authors = _context.authors
                     .Where(a => bookDTO.AuthorIds.Contains(a.Id)).ToList();
-            }
-            if (bookDTO.GenreIds != null)
-            {
-                book.Genres = _context.genre
-                    .Where(g => bookDTO.GenreIds.Contains(g.Id)).ToList();
-            }
-
-            _context.Update(book);
-            _context.SaveChanges();
+                }
+                if (bookDTO.GenreIds.Count() > 0)
+                {
+                    book.Genres = _context.genre
+                    .Where(a => bookDTO.GenreIds.Contains(a.Id)).ToList();
+                }
+                    _context.books.Update(book);
+                    _context.SaveChanges();
 
             return bookDTO;
+            }
+
+        public BookToReturnDTO AddDataToBook(BookToReturnDTO bookDTO)
+        {
+            //select all author names from database
+            var existingAuthorNames = _context.authors.Select(a => a.Name).ToList();
+
+            var book = new Book
+            {
+                Title = bookDTO.Title,
+                PublishedYear = bookDTO.PublishedYear,
+                //add  new authors
+                
+                Authors = bookDTO.Authors.Where(a => !existingAuthorNames.Contains(a.Name)).Select(i => new Author
+                {
+
+                    Name = i.Name,
+                    Email = i.Email,
+                    Phone = i.Phone, 
+                    NationalityId = i.NationalityId
+                }
+                
+                ).ToList(),
+                Genres = bookDTO.Genres.Select(i => new Genre
+                {
+                    Name = i.Name
+                }).ToList()
 
 
+            };
+             var BookState = _context.books.Add(book);
+
+            if (BookState == null) { return null; }
+            _context.SaveChanges();
+            return bookDTO;
         }
     }
 }
