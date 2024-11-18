@@ -23,7 +23,7 @@ namespace Book_Assignment.DTOs
         public string? Phone { get; set; }
         [EmailAddress(ErrorMessage = "Please Enter Correct Email")]
         public string? Email { get; set; }
-        public List<BookDTO> Books { get; set; }
+        public List<BookToReturnDTO> Books { get; set; }
         public NationalityDTO? Nationality { get; set; }
 
     }
