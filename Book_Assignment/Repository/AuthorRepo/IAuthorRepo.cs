@@ -9,7 +9,10 @@ namespace Author_Assignment.Repository.AuthorRepo
 
         public AuthorDTO Add(AuthorDTO bookDTO);
 
-        public AuthorDTO Update(AuthorDTO bookDTO);
+        public AuthorToReturnDTO AddDataToAuthor(AuthorToReturnDTO authorDTO);
+        public AuthorDTO Update(int Id, AuthorDTO bookDTO);
+
+
 
         public AuthorDTO DeleteById(int id);
     }

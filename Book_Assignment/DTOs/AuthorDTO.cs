@@ -10,8 +10,8 @@ namespace Book_Assignment.DTOs
         public string? Phone { get; set; }
         [EmailAddress(ErrorMessage = "Please Enter Correct Email")]
         public string? Email { get; set; }
-
-        public int NationalityId { get; set; }
+        public List<int>? BooksId { get; set; }
+        public int? NationalityId { get; set; }
 
 
     }
@@ -23,9 +23,8 @@ namespace Book_Assignment.DTOs
         public string? Phone { get; set; }
         [EmailAddress(ErrorMessage = "Please Enter Correct Email")]
         public string? Email { get; set; }
-
+        public List<BookDTO> Books { get; set; }
         public NationalityDTO? Nationality { get; set; }
-
 
     }
 }
